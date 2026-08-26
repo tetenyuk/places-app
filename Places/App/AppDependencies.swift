@@ -5,9 +5,11 @@
 
 import Foundation
 
-/// Composition root: the single place where protocols are bound to concrete implementations.
+/// Composition root
 struct AppDependencies {
+    let placesRepository: any PlacesRepository
+
     static func live() -> AppDependencies {
-        AppDependencies()
+        AppDependencies(placesRepository: StaticPlacesRepository())
     }
 }

@@ -6,7 +6,7 @@
 import Foundation
 
 /// Every failure the app can surface to the user.
-nonisolated enum PlacesError: Error, Equatable {
+enum PlacesError: Error, Equatable {
     /// The device has no usable network connection.
     case offline
 

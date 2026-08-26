@@ -6,7 +6,7 @@
 import Foundation
 
 /// The complete state of a screen that loads its content asynchronously.
-nonisolated enum ViewState<Value> {
+enum ViewState<Value> {
     case loading
     case loaded(Value)
     case failed(PlacesError)
