@@ -2,16 +2,16 @@
 //  PlacesApp.swift
 //  Places
 //
-//  Created by Dmitry Tetenyuk on 26.08.2026.
-//
 
 import SwiftUI
 
 @main
 struct PlacesApp: App {
+    private let dependencies = AppDependencies.live()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView(dependencies: dependencies)
         }
     }
 }
