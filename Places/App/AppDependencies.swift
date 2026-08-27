@@ -10,6 +10,9 @@ struct AppDependencies {
     let placesRepository: any PlacesRepository
 
     static func live() -> AppDependencies {
-        AppDependencies(placesRepository: StaticPlacesRepository())
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15
+        let client = URLSessionHTTPClient(session: URLSession(configuration: configuration))
+        return AppDependencies(placesRepository: RemotePlacesRepository(client: client, url: .places))
     }
 }

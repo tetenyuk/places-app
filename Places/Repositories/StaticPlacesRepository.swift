@@ -5,7 +5,8 @@
 
 import Foundation
 
-/// Stand-in until the network layer lands
+#if DEBUG
+/// Previews only
 struct StaticPlacesRepository: PlacesRepository {
     func places() async throws -> [Place] {
         [
@@ -16,3 +17,4 @@ struct StaticPlacesRepository: PlacesRepository {
         ]
     }
 }
+#endif
