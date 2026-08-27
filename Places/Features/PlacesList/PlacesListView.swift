@@ -8,8 +8,8 @@ import SwiftUI
 struct PlacesListView: View {
     @StateObject private var viewModel: PlacesListViewModel
 
-    init(repository: any PlacesRepository) {
-        _viewModel = StateObject(wrappedValue: PlacesListViewModel(repository: repository))
+    init(repository: any PlacesRepository, urlOpener: any URLOpener) {
+        _viewModel = StateObject(wrappedValue: PlacesListViewModel(repository: repository, urlOpener: urlOpener))
     }
 
     var body: some View {
@@ -18,6 +18,14 @@ struct PlacesListView: View {
                 .navigationTitle("Places")
         }
         .task { await viewModel.load() }
+        .alert(
+            PlacesError.wikipediaUnavailable.errorDescription ?? "",
+            isPresented: $viewModel.wikipediaUnavailable
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(PlacesError.wikipediaUnavailable.recoverySuggestion ?? "")
+        }
     }
 
     @ViewBuilder
@@ -29,7 +37,12 @@ struct PlacesListView: View {
             EmptyStateView()
         case .loaded(let places):
             List(places) { place in
-                PlaceRow(place: place)
+                Button {
+                    Task { await viewModel.select(place) }
+                } label: {
+                    PlaceRow(place: place)
+                }
+                .buttonStyle(.plain)
             }
             .refreshable { await viewModel.refresh() }
         case .failed(let error):
@@ -41,5 +54,5 @@ struct PlacesListView: View {
 }
 
 #Preview {
-    PlacesListView(repository: StaticPlacesRepository())
+    PlacesListView(repository: StaticPlacesRepository(), urlOpener: UIApplicationURLOpener())
 }

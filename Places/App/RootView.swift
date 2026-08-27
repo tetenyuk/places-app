@@ -9,7 +9,7 @@ struct RootView: View {
     let dependencies: AppDependencies
 
     var body: some View {
-        PlacesListView(repository: dependencies.placesRepository)
+        PlacesListView(repository: dependencies.placesRepository, urlOpener: dependencies.urlOpener)
     }
 }
 
