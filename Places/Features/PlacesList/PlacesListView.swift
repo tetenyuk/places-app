@@ -6,18 +6,37 @@
 import SwiftUI
 
 struct PlacesListView: View {
+    private let dependencies: AppDependencies
     @StateObject private var viewModel: PlacesListViewModel
+    @State private var isAddingPlace = false
 
-    init(repository: any PlacesRepository, urlOpener: any URLOpener) {
-        _viewModel = StateObject(wrappedValue: PlacesListViewModel(repository: repository, urlOpener: urlOpener))
+    init(dependencies: AppDependencies) {
+        self.dependencies = dependencies
+        _viewModel = StateObject(wrappedValue: PlacesListViewModel(
+            repository: dependencies.placesRepository,
+            cache: dependencies.placesCache,
+            urlOpener: dependencies.urlOpener
+        ))
     }
 
     var body: some View {
         NavigationStack {
             content
                 .navigationTitle("Places")
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button {
+                            isAddingPlace = true
+                        } label: {
+                            Label("Custom place", systemImage: "plus")
+                        }
+                    }
+                }
         }
         .task { await viewModel.load() }
+        .sheet(isPresented: $isAddingPlace) {
+            CustomPlaceView(urlOpener: dependencies.urlOpener, store: dependencies.lastCoordinateStore)
+        }
         .alert(
             PlacesError.wikipediaUnavailable.errorDescription ?? "",
             isPresented: $viewModel.wikipediaUnavailable
@@ -36,15 +55,20 @@ struct PlacesListView: View {
         case .loaded(let places) where places.isEmpty:
             EmptyStateView()
         case .loaded(let places):
-            List(places) { place in
-                Button {
-                    Task { await viewModel.select(place) }
-                } label: {
-                    PlaceRow(place: place)
+            VStack(spacing: 0) {
+                if viewModel.isShowingCachedPlaces {
+                    CachedPlacesBanner()
                 }
-                .buttonStyle(.plain)
+                List(places) { place in
+                    Button {
+                        Task { await viewModel.select(place) }
+                    } label: {
+                        PlaceRow(place: place)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .refreshable { await viewModel.refresh() }
             }
-            .refreshable { await viewModel.refresh() }
         case .failed(let error):
             ErrorStateView(error: error) {
                 Task { await viewModel.load() }
@@ -54,5 +78,5 @@ struct PlacesListView: View {
 }
 
 #Preview {
-    PlacesListView(repository: StaticPlacesRepository(), urlOpener: UIApplicationURLOpener())
+    PlacesListView(dependencies: .preview())
 }

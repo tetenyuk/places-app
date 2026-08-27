@@ -5,14 +5,20 @@
 
 import Foundation
 
-struct PlacesResponse: Decodable {
+struct PlacesResponse: Codable {
     let locations: [PlaceDTO]
 }
 
-struct PlaceDTO: Decodable {
+struct PlaceDTO: Codable {
     let name: String?
     let lat: Double
     let long: Double
+}
+
+extension PlaceDTO {
+    init(place: Place) {
+        self.init(name: place.name, lat: place.coordinate.latitude, long: place.coordinate.longitude)
+    }
 }
 
 extension Place {

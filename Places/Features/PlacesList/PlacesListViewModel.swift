@@ -9,13 +9,16 @@ import Foundation
 @MainActor
 final class PlacesListViewModel: ObservableObject {
     @Published private(set) var state: ViewState<[Place]> = .loading
+    @Published private(set) var isShowingCachedPlaces = false
     @Published var wikipediaUnavailable = false
 
     private let repository: any PlacesRepository
+    private let cache: any PlacesCache
     private let urlOpener: any URLOpener
 
-    init(repository: any PlacesRepository, urlOpener: any URLOpener) {
+    init(repository: any PlacesRepository, cache: any PlacesCache, urlOpener: any URLOpener) {
         self.repository = repository
+        self.cache = cache
         self.urlOpener = urlOpener
     }
 
@@ -36,11 +39,25 @@ final class PlacesListViewModel: ObservableObject {
 
     private func reload() async {
         do {
-            state = .loaded(try await repository.places())
+            let places = try await repository.places()
+            await cache.save(places)
+            isShowingCachedPlaces = false
+            state = .loaded(places)
         } catch is CancellationError {
             return
         } catch {
-            state = .failed(error as? PlacesError ?? .requestFailed)
+            await handle(error as? PlacesError ?? .requestFailed)
         }
+    }
+
+    /// Offline is the only failure worth answering with stale data
+    private func handle(_ error: PlacesError) async {
+        guard error == .offline, let cached = await cache.load(), !cached.isEmpty else {
+            isShowingCachedPlaces = false
+            state = .failed(error)
+            return
+        }
+        isShowingCachedPlaces = true
+        state = .loaded(cached)
     }
 }

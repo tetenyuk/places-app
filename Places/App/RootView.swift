@@ -9,10 +9,10 @@ struct RootView: View {
     let dependencies: AppDependencies
 
     var body: some View {
-        PlacesListView(repository: dependencies.placesRepository, urlOpener: dependencies.urlOpener)
+        PlacesListView(dependencies: dependencies)
     }
 }
 
 #Preview {
-    RootView(dependencies: .live())
+    RootView(dependencies: .preview())
 }

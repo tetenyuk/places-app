@@ -44,10 +44,24 @@ struct ErrorStateView: View {
     }
 }
 
+struct CachedPlacesBanner: View {
+    var body: some View {
+        Label("Offline — showing saved places", systemImage: "wifi.slash")
+            .font(.footnote)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(8)
+            .background(Color.yellow.opacity(0.2))
+    }
+}
+
 #Preview("Empty") {
     EmptyStateView()
 }
 
 #Preview("Error") {
     ErrorStateView(error: .offline) {}
+}
+
+#Preview("Cached") {
+    CachedPlacesBanner()
 }
