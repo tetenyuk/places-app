@@ -60,3 +60,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Wikipedia fork pulled by Scripts/fetch-wikipedia.sh
+ThirdParty/
