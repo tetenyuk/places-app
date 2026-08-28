@@ -16,3 +16,10 @@ struct UIApplicationURLOpener: URLOpener {
         await UIApplication.shared.open(url)
     }
 }
+
+#if DEBUG
+/// Always fails, so UI tests can exercise the missing-Wikipedia path without depending on what is installed
+struct UnavailableURLOpener: URLOpener {
+    func open(_ url: URL) async -> Bool { false }
+}
+#endif

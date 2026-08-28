@@ -1,0 +1,96 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "banner.cachedPlaces" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Offline — showing saved places" }
+        }
+      }
+    },
+    "coordinate.spoken" : {
+      "comment" : "Spoken by VoiceOver for a place's coordinates",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "latitude %1$@, longitude %2$@" }
+        }
+      }
+    },
+    "error.invalidData.suggestion" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "The places list is unavailable right now." }
+        }
+      }
+    },
+    "error.invalidData.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Unexpected response" }
+        }
+      }
+    },
+    "error.offline.suggestion" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Check your connection and try again." }
+        }
+      }
+    },
+    "error.offline.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "No internet connection" }
+        }
+      }
+    },
+    "error.requestFailed.suggestion" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Please try again in a moment." }
+        }
+      }
+    },
+    "error.requestFailed.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Couldn’t load places" }
+        }
+      }
+    },
+    "error.wikipediaUnavailable.suggestion" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Install Wikipedia and try again later." }
+        }
+      }
+    },
+    "error.wikipediaUnavailable.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Wikipedia isn’t installed" }
+        }
+      }
+    },
+    "place.unnamed" : {
+      "comment" : "Shown for the feed entry that has no name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Unnamed place" }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
